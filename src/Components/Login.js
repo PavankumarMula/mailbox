@@ -1,6 +1,7 @@
 import { useRef } from "react";
-
+import { useHistory } from "react-router-dom";
 const LogIn = () => {
+  const history=useHistory()
   const email = useRef("");
   const password = useRef("");
 
@@ -25,6 +26,7 @@ const LogIn = () => {
         const response=await sendLoginData.json();
         localStorage.setItem('token',response.idToken);
         localStorage.setItem('email',response.email);
+        history.replace('/home')
       }else{
         const response=await sendLoginData.json();
         throw response.error
