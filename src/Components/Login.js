@@ -1,7 +1,11 @@
 import { useRef } from "react";
 import { useHistory } from "react-router-dom";
+import "./Login.css";
+import { useDispatch } from "react-redux";
+import { authSliceActions } from "../store/AuthSlice";
 const LogIn = () => {
-  const history=useHistory()
+  const disptach = useDispatch();
+  const history = useHistory();
   const email = useRef("");
   const password = useRef("");
 
@@ -22,23 +26,24 @@ const LogIn = () => {
           },
         }
       );
-      if(sendLoginData.ok){
-        const response=await sendLoginData.json();
-        localStorage.setItem('token',response.idToken);
-        localStorage.setItem('email',response.email);
-        history.replace('/home')
-      }else{
-        const response=await sendLoginData.json();
-        throw response.error
+      if (sendLoginData.ok) {
+        const response = await sendLoginData.json();
+        localStorage.setItem("token", response.idToken);
+        localStorage.setItem("email", response.email);
+        history.replace("/home");
+        disptach(authSliceActions.login());
+      } else {
+        const response = await sendLoginData.json();
+        throw response.error;
       }
     } catch (error) {
-        alert(error.message)
+      alert(error.message);
     }
   };
   return (
     <>
-      <div className="card">
-        <form className="form" onSubmit={loginHandler}>
+      <div className="cardlogin">
+        <form className="formlogin" onSubmit={loginHandler}>
           <label htmlFor="email">Email</label>
           <input type="email" ref={email} id="email" required></input>
           <label htmlFor="password">Password</label>

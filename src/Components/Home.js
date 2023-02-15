@@ -1,6 +1,5 @@
-const Home =()=>{
- return <div>
-    <h2 style={{color:"white"}}>Welcome to MailBox</h2>
- </div>
-}
-export default Home
+import EditorPanel from "./Editor";
+const Home = () => {
+  return <EditorPanel />;
+};
+export default Home;

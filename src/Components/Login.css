@@ -1,8 +1,4 @@
-body{
-    margin: 0;
-    background-color:#1B1212;
- }
- .card{
+.cardlogin{
     width:90%;
     max-width: 35rem;
     padding: 2rem;
@@ -10,19 +6,19 @@ body{
     margin: 3rem auto;
     background-color:#7B68EE;
  }
- .form input{
+ .formlogin input{
      display: flex;
      margin-bottom: 18px;
      padding: 10px;
      width: 95%;
  }
- .form label{
+ .formlogin label{
      display: flex;
      margin-bottom: 18px;
      font-size: large;
      font-style: bold;
  }
- .form button{
+ .formlogin button{
      margin: 5px;
      width: 70px;
      height: 30px;
