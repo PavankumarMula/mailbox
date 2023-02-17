@@ -3,10 +3,13 @@ import "./Navbar.css";
 import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { authSliceActions } from "../store/AuthSlice";
+import { useHistory } from "react-router-dom";
 const Navbar = () => {
   const disptach = useDispatch();
+  const history=useHistory()
   const logoutHandler = () => {
     disptach(authSliceActions.logout());
+    history.replace('/login');
   };
   return (
     <nav className="navbar">
@@ -22,6 +25,12 @@ const Navbar = () => {
             Login
           </Link>
         </li>
+        <li className="nav-item">
+        <Link to="/inbox" className="nav-link">
+            Inbox
+          </Link>
+        </li>
+        
         <button className="button" onClick={logoutHandler}>
           logout
         </button>

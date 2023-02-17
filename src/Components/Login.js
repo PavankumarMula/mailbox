@@ -14,7 +14,7 @@ const LogIn = () => {
     e.preventDefault();
     try {
       const sendLoginData = await fetch(
-        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyAsYyotWR2zesaRukTm4MhJNB9k7RTFZdY`,
+        `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=AIzaSyDK25FUj8zHyGn3JfmMGp-kbfS9VmbbVZ0`,
         {
           method: "POST",
           body: JSON.stringify({
@@ -50,6 +50,11 @@ const LogIn = () => {
           <input type="password" ref={password} id="password" required></input>
           <button type="submit">LogIn</button>
         </form>
+        <div>
+        <button className="login" onClick={() => {history.replace('/signup')}}>
+          Dont Have an Account Signup Here
+        </button>
+      </div>
       </div>
     </>
   );

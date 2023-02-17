@@ -4,8 +4,8 @@ import { EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
+import { sendingEmailMessage } from "../store/MailSlice-Actions";
 import { mailActions } from "../store/MailSlice";
-
 
 const EditorPanel = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
@@ -20,20 +20,21 @@ const EditorPanel = () => {
   const handleRecipientEmailChange = (event) => {
     setRecipientEmail(event.target.value);
   };
+  //sending receiver message to store mailSlice
+  
 
   const handleSendClick = () => {
     // TODO: Use an email client or service to send the email with the content of the editor
     const messageBody = editorState.getCurrentContent().getPlainText();
-    const recieverMail=recipientEmail.replace('@', '').replace('.', '');
-    const senderMail=localStorage.getItem('email').replace('@', '').replace('.', '');
-    if(senderMail&&recieverMail){
-      console.log("hi")
-      disptach(mailActions.send({
+    const senderMail=localStorage.getItem('email')
+    if(recipientEmail&&senderMail){
+      disptach(sendingEmailMessage({
         from:senderMail,
-        to:recieverMail,
+        to:recipientEmail,
         message:messageBody
       }))
     }
+     disptach(mailActions.gettingReceiverEmail(recipientEmail));
   };
 
   return (
