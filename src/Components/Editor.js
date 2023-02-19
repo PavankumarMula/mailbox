@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { sendingEmailMessage } from "../store/MailSlice-Actions";
 import { mailActions } from "../store/MailSlice";
 
+
 const EditorPanel = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [recipientEmail, setRecipientEmail] = useState("");
@@ -34,7 +35,7 @@ const EditorPanel = () => {
         message:messageBody
       }))
     }
-     disptach(mailActions.gettingReceiverEmail(recipientEmail));
+    disptach(mailActions.setToEmail(recipientEmail));
   };
 
   return (

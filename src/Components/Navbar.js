@@ -1,14 +1,17 @@
 import React from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authSliceActions } from "../store/AuthSlice";
 import { useHistory } from "react-router-dom";
+import { mailActions } from "../store/MailSlice";
 const Navbar = () => {
   const disptach = useDispatch();
   const history=useHistory()
+  
   const logoutHandler = () => {
     disptach(authSliceActions.logout());
+    disptach(mailActions.onLogOut())
     history.replace('/login');
   };
   return (

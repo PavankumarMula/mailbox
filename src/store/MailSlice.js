@@ -1,21 +1,24 @@
 import { createSlice } from "@reduxjs/toolkit";
 const loggedInUserEmail = localStorage.getItem('email')
-const intialstate = { mailData: [], email: loggedInUserEmail,to:null };
+const intialstate = { mailData:[], email: loggedInUserEmail,toEmail:null };
 const mailSlice = createSlice({
   name: "mail",
   initialState: intialstate,
   reducers: {
     send(state, action) {
       state.mailData = [action.payload, ...state.mailData];
-      console.log(state.mailData);
     },
     receieve(state, action) {
       const emails = action.payload;
       const receievedInbox=emails.filter(item=>item.to===state.email);
-      state.mailData=receievedInbox;
+      state.mailData=state.mailData.concat(receievedInbox);
     },
-    gettingReceiverEmail(state,action){
-        state.to=action.payload
+    setToEmail(state,action){
+      state.toEmail=action.payload
+    },
+    onLogOut(state,action){
+      state.toEmail=null;
+      state.mailData=[]
     }
   },
 });
