@@ -1,7 +1,7 @@
 .inbox-container {
     display: flex;
     background-color: #ccc;
-
+    height: 100vh;
   }
   
   .inbox-sidebar {

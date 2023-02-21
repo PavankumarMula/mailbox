@@ -3,12 +3,13 @@ import { useHistory } from "react-router-dom";
 import "./Login.css";
 import { useDispatch } from "react-redux";
 import { authSliceActions } from "../store/AuthSlice";
+import { mailActions } from "../store/MailSlice";
 const LogIn = () => {
   const disptach = useDispatch();
   const history = useHistory();
   const email = useRef("");
   const password = useRef("");
-
+  
   //login form Validation
   const loginHandler = async (e) => {
     e.preventDefault();
@@ -32,6 +33,7 @@ const LogIn = () => {
         localStorage.setItem("email", response.email);
         history.replace("/home");
         disptach(authSliceActions.login());
+        disptach(mailActions.onLogin(localStorage.getItem('email')))
       } else {
         const response = await sendLoginData.json();
         throw response.error;
@@ -51,10 +53,15 @@ const LogIn = () => {
           <button type="submit">LogIn</button>
         </form>
         <div>
-        <button className="login" onClick={() => {history.replace('/signup')}}>
-          Dont Have an Account Signup Here
-        </button>
-      </div>
+          <button
+            className="login"
+            onClick={() => {
+              history.replace("/signup");
+            }}
+          >
+            Dont Have an Account Signup Here
+          </button>
+        </div>
       </div>
     </>
   );

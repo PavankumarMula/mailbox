@@ -3,16 +3,17 @@ import { Editor } from "react-draft-wysiwyg";
 import { EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { sendingEmailMessage } from "../store/MailSlice-Actions";
-import { mailActions } from "../store/MailSlice";
+import { useHistory } from "react-router-dom";
+
+
+
 
 
 const EditorPanel = () => {
   const [editorState, setEditorState] = useState(EditorState.createEmpty());
   const [recipientEmail, setRecipientEmail] = useState("");
-  const disptach=useDispatch();
-
+  const history=useHistory()
+  const email=localStorage.getItem('email')
 
   const handleEditorChange = (newEditorState) => {
     setEditorState(newEditorState);
@@ -22,20 +23,53 @@ const EditorPanel = () => {
     setRecipientEmail(event.target.value);
   };
   //sending receiver message to store mailSlice
-  
 
-  const handleSendClick = () => {
+  const handleSendClick = async () => {
     // TODO: Use an email client or service to send the email with the content of the editor
     const messageBody = editorState.getCurrentContent().getPlainText();
-    const senderMail=localStorage.getItem('email')
-    if(recipientEmail&&senderMail){
-      disptach(sendingEmailMessage({
-        from:senderMail,
-        to:recipientEmail,
-        message:messageBody
-      }))
+    const senderMailUrl =email.replace("@",'').replace(".",'');
+    const recieverUrl = recipientEmail.replace("@", '').replace(".", '');
+    try {
+      const sendDataToDb = await fetch(
+        `https://mail-box-dbc88-default-rtdb.firebaseio.com/${senderMailUrl}.json`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            from: email,
+            to: recipientEmail,
+            message: messageBody,
+            read: true,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ); //fetch ends`)
+      await fetch(
+        `https://mail-box-dbc88-default-rtdb.firebaseio.com/${recieverUrl}.json`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            from: email,
+            to: recipientEmail,
+            message: messageBody,
+            read: false,
+          }),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      ); //fetch ends
+      if (sendDataToDb.ok) {
+        const response =await sendDataToDb.json();
+        history.replace('/inbox')
+      } else {
+        const response =await sendDataToDb.json();
+        throw response.error;
+      }
+    } catch (error) {
+      alert(error.message);
     }
-    disptach(mailActions.setToEmail(recipientEmail));
   };
 
   return (

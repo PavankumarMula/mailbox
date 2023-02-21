@@ -3,7 +3,7 @@ import "./SignUp.css";
 import { useRef } from "react";
 import { useHistory } from "react-router-dom";
 const SignUp = () => {
-  const history=useHistory()
+  const history = useHistory();
   const email = useRef("");
   const password = useRef("");
   const confirmPassword = useRef("");
@@ -37,8 +37,8 @@ const SignUp = () => {
       if (sendSignupData.ok) {
         const response = await sendSignupData.json();
         console.log(response);
-        if(response.idToken){
-            history.replace('/login')
+        if (response.idToken) {
+          history.replace("/login");
         }
       } else {
         const response = await sendSignupData.json();
@@ -66,7 +66,12 @@ const SignUp = () => {
         <button type="submit">SignUp</button>
       </form>
       <div>
-        <button className="login" onClick={() => {history.replace('/login')}}>
+        <button
+          className="login"
+          onClick={() => {
+            history.replace("/login");
+          }}
+        >
           Already Have An Account? Log In Here
         </button>
       </div>
