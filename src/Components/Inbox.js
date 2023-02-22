@@ -62,7 +62,25 @@ const Inbox = () => {
       }
     }
   };
-  
+
+  //Delete Handler
+  const deleteHandler = async (mail) => {
+    const id = mail.id;
+    const sender = mail.to.replace("@", "").replace(".", "");
+    try {
+      const deleteMail = await fetch(
+        `https://mail-box-dbc88-default-rtdb.firebaseio.com/${sender}/${id}.json`,
+        {
+          method: "DELETE",
+        }
+      ); //fetch ends
+      if (deleteMail.ok) {
+        disptach(mailActions.deleteMail(mail));
+      }
+    } catch (error) {
+      alert(error);
+    }
+  };
 
   return (
     <>
@@ -94,17 +112,31 @@ const Inbox = () => {
                   readMailsHandler(mail);
                 }}
                 type="checkbox"
-                checked={mail.read===true?true:false}
+                checked={mail.read === true ? true : false}
               />
               <div className="inbox-item-header">
                 <div className="inbox-item-header-from">From</div>
-
-                <div className="inbox-item-header-message">{mail.read===true?"Message":""}</div>
+                <div className="inbox-item-from">{mail.from}</div>
+                <div className="inbox-item-header-message">
+                  {mail.read === true ? "Message" : ""}
+                </div>
+                <div className="inbox-item-message">
+                  {mail.read === true && mail.message}
+                </div>
               </div>
               <div className="inbox-item-content">
-                <div className="inbox-item-from">{mail.from}</div>
+               
 
-                <div className="inbox-item-message">{mail.read===true && mail.message}</div>
+                
+              </div>
+              <div class="delete-button-container">
+                <button
+                  onClick={() => {
+                    deleteHandler(mail);
+                  }}
+                >
+                  Delete
+                </button>
               </div>
             </div>
           ))}
